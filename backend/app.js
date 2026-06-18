@@ -20,6 +20,21 @@ var server = http.createServer(async function (req, res) {
     return;
   }
 
+  if (parsed.pathname === "/stats") {
+    try {
+      var stats = await db.getUserGameStats(parsed.query.limit || 200);
+      res.writeHead(200, {
+        "Content-Type": "application/json; charset=utf-8",
+        "Access-Control-Allow-Origin": "*",
+      });
+      res.end(JSON.stringify({ ok: true, stats: stats }));
+    } catch (err) {
+      res.writeHead(500, { "Content-Type": "application/json; charset=utf-8" });
+      res.end(JSON.stringify({ ok: false, error: "failed_to_load_stats" }));
+    }
+    return;
+  }
+
   res.writeHead(200, { "Content-Type": "text/plain" });
   res.end("tkmninja websocket server is running\n");
 });
