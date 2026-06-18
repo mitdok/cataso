@@ -2,6 +2,9 @@ const { Pool } = require('pg');
 
 const connectionString = process.env.DATABASE_URL || process.env.POSTGRES_URL || '';
 const enabled = !!connectionString;
+const LOG_RETENTION_ROWS = Number(process.env.LOG_RETENTION_ROWS || 20000);
+const LOG_RETENTION_DAYS = Number(process.env.LOG_RETENTION_DAYS || 30);
+let logPruneCounter = 0;
 
 const pool = enabled
   ? new Pool({
@@ -78,6 +81,9 @@ async function init() {
           message text NOT NULL,
           created_at timestamptz NOT NULL DEFAULT now()
         );
+
+        CREATE INDEX IF NOT EXISTS chat_logs_room_created_idx
+          ON chat_logs(room_id, created_at DESC);
 
         CREATE OR REPLACE VIEW user_game_stats AS
         SELECT
@@ -188,11 +194,60 @@ async function finishGameSession(gameId, { winnerUid, winnerTrip, reason, snapsh
   }
 }
 
+async function pruneChatLogs(force = false) {
+  if (!enabled) return;
+  logPruneCounter++;
+  if (!force && logPruneCounter % 100 !== 0) return;
+
+  if (LOG_RETENTION_DAYS > 0) {
+    await query(
+      `DELETE FROM chat_logs
+       WHERE created_at < now() - ($1::int * interval '1 day')`,
+      [LOG_RETENTION_DAYS]
+    );
+  }
+
+  if (LOG_RETENTION_ROWS > 0) {
+    await query(
+      `DELETE FROM chat_logs
+       WHERE id IN (
+         SELECT id FROM chat_logs
+         ORDER BY created_at DESC, id DESC
+         OFFSET $1
+       )`,
+      [LOG_RETENTION_ROWS]
+    );
+  }
+}
+
 async function logChat(roomId, uid, trip, color, message) {
   await query(
     `INSERT INTO chat_logs (room_id, uid, trip, color, message) VALUES ($1, $2, $3, $4, $5)`,
     [roomId, uid || '?', trip || null, color || null, String(message || '').slice(0, 500)]
   );
+  pruneChatLogs(false).catch((err) => console.error('[pg] failed to prune chat_logs', err));
+}
+
+async function getRecentChatLogs(roomId, limit = 200) {
+  const safeLimit = Math.max(1, Math.min(Number(limit) || 200, 1000));
+  const params = [];
+  let where = '';
+  if (roomId !== undefined && roomId !== null && roomId !== '') {
+    params.push(Number(roomId));
+    where = 'WHERE room_id = $1';
+  }
+  params.push(safeLimit);
+  const limitParam = params.length;
+  const res = await query(
+    `SELECT room_id, uid, trip, color, message, created_at
+     FROM chat_logs
+     ${where}
+     ORDER BY created_at DESC, id DESC
+     LIMIT $${limitParam}`,
+    params
+  );
+  if (!res) return [];
+  return res.rows.reverse();
 }
 
 module.exports = {
@@ -205,5 +260,7 @@ module.exports = {
   startGameSession,
   finishGameSession,
   logChat,
+  pruneChatLogs,
+  getRecentChatLogs,
   get lastError() { return lastError; },
 };
