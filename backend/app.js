@@ -48,23 +48,25 @@ var tripcode = require("./tripcode");
 
 const redis = require("redis");
 
-const redisURL =
-  process.env.REDIS_TLS_URL ||
-  process.env.REDIS_URL ||
-  "redis://localhost:6379";
-const client = redis.createClient({
-  url: redisURL,
-  socket: {
-    tls: !!process.env.REDIS_TLS_URL,
-    rejectUnauthorized: false,
-  },
-});
-client.connect().catch((err) => console.log("Redis connect error =>", err));
+const redisURL = process.env.REDIS_TLS_URL || process.env.REDIS_URL || "";
+let client = null;
+if (redisURL) {
+  client = redis.createClient({
+    url: redisURL,
+    socket: {
+      tls: !!process.env.REDIS_TLS_URL,
+      rejectUnauthorized: false,
+    },
+  });
+  client.connect().catch((err) => console.log("Redis connect error =>", err));
+  client.on("error", function (err) {
+    console.log("Redis error =>", err);
+  });
+  client.on("reconnecting", () => console.log("Redis reconnecting"));
+} else {
+  console.log("Redis disabled: using PostgreSQL room state fallback only");
+}
 db.init();
-client.on("error", function (err) {
-  console.log("Redis error =>", err);
-});
-client.on("reconnecting", () => console.log("Redis reconnecting"));
 
 var roomList = [
   new Cataso(0, client), // 0
