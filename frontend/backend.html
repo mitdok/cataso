@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <title>Cataso Backend Switcher</title>
+  <script src="./js/const.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 24px;
+      background: #101214;
+      color: #eee;
+      font-family: "メイリオ", "Meiryo", sans-serif;
+    }
+    .box {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #1b1f23;
+      border: 1px solid #333;
+      border-radius: 12px;
+    }
+    h1 { margin-top: 0; }
+    label { display: block; margin: 14px 0 6px; }
+    input, select, button {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px;
+      border: 1px solid #555;
+      border-radius: 8px;
+      background: #111;
+      color: #fff;
+      font-size: 15px;
+    }
+    button {
+      margin-top: 16px;
+      background: #2f6f3e;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .note {
+      margin-top: 16px;
+      padding: 12px;
+      background: #111;
+      border-left: 4px solid #6da7ff;
+      color: #ccc;
+      line-height: 1.6;
+    }
+    a { color: #9fd3ff; }
+    code { color: #8ee58e; }
+    @media (max-width: 720px) { .row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>Cataso Backend Switcher</h1>
+    <p>Render版とCloudflare版を、ブラウザ側で切り替えます。</p>
+
+    <label>Profile</label>
+    <select id="profile">
+      <option value="render">Render</option>
+      <option value="cloudflare">Cloudflare</option>
+      <option value="custom">Custom</option>
+    </select>
+
+    <div class="row">
+      <div>
+        <label>Render WebSocket URL</label>
+        <input id="renderWs" placeholder="wss://tkmninja-mit.onrender.com" />
+      </div>
+      <div>
+        <label>Cloudflare WebSocket URL</label>
+        <input id="cloudflareWs" placeholder="wss://api.example.com" />
+      </div>
+    </div>
+
+    <label>Custom WebSocket URL</label>
+    <input id="customWs" placeholder="ws://localhost:5000 or wss://..." />
+
+    <button id="save">保存して部屋一覧へ</button>
+    <button id="reset" style="background:#5f3333;">設定を初期化</button>
+
+    <div class="note">
+      現在の接続先: <code id="current"></code><br>
+      URLでも切替できます: <code>?backend=render</code>, <code>?backend=cloudflare</code>, <code>?ws=wss://...</code><br>
+      CloudflareバックエンドはWorkers/Durable Objects版ができた後、そのURLを入れて使います。<br>
+      <a href="./index.html">部屋一覧へ</a> / <a href="./logs.html">ログ・勝率へ</a>
+    </div>
+  </div>
+
+  <script>
+    function value(key, fallback) {
+      return localStorage.getItem(key) || fallback || '';
+    }
+    function refresh() {
+      document.getElementById('profile').value = value('CATASO_BACKEND_PROFILE', 'render');
+      document.getElementById('renderWs').value = value('CATASO_RENDER_WSURL', 'wss://tkmninja-mit.onrender.com');
+      document.getElementById('cloudflareWs').value = value('CATASO_CLOUDFLARE_WSURL', '');
+      document.getElementById('customWs').value = value('CATASO_CUSTOM_WSURL', '');
+      document.getElementById('current').textContent = window.WSURL;
+    }
+    document.getElementById('save').onclick = function () {
+      localStorage.setItem('CATASO_BACKEND_PROFILE', document.getElementById('profile').value);
+      localStorage.setItem('CATASO_RENDER_WSURL', document.getElementById('renderWs').value.trim());
+      localStorage.setItem('CATASO_CLOUDFLARE_WSURL', document.getElementById('cloudflareWs').value.trim());
+      localStorage.setItem('CATASO_CUSTOM_WSURL', document.getElementById('customWs').value.trim());
+      location.href = './index.html';
+    };
+    document.getElementById('reset').onclick = function () {
+      ['CATASO_BACKEND_PROFILE', 'CATASO_RENDER_WSURL', 'CATASO_CLOUDFLARE_WSURL', 'CATASO_CUSTOM_WSURL', 'CATASO_WSURL'].forEach(function (key) {
+        localStorage.removeItem(key);
+      });
+      location.reload();
+    };
+    refresh();
+  </script>
+</body>
+</html>
