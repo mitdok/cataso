@@ -91,12 +91,15 @@ async function init() {
           max(p.uid) AS latest_uid,
           count(*)::integer AS games,
           sum(CASE WHEN p.is_winner THEN 1 ELSE 0 END)::integer AS wins,
+          (count(*) - sum(CASE WHEN p.is_winner THEN 1 ELSE 0 END))::integer AS losses,
           CASE WHEN count(*) = 0 THEN 0 ELSE round((sum(CASE WHEN p.is_winner THEN 1 ELSE 0 END)::numeric / count(*)) * 100, 2) END AS win_rate_percent,
           min(s.started_at) AS first_game_at,
           max(s.ended_at) AS last_game_at
         FROM game_participants p
         JOIN game_sessions s ON s.id = p.game_id
         WHERE s.ended_at IS NOT NULL
+          AND p.trip IS NOT NULL
+          AND p.trip <> ''
         GROUP BY p.trip;
       `);
       ready = true;
@@ -247,7 +250,20 @@ async function getRecentChatLogs(roomId, limit = 200) {
     params
   );
   if (!res) return [];
-  return res.rows.reverse();
+  return res.rows;
+}
+
+async function getUserGameStats(limit = 200) {
+  const safeLimit = Math.max(1, Math.min(Number(limit) || 200, 1000));
+  const res = await query(
+    `SELECT trip, latest_uid, games, wins, losses, win_rate_percent, first_game_at, last_game_at
+     FROM user_game_stats
+     ORDER BY games DESC, wins DESC, win_rate_percent DESC, last_game_at DESC
+     LIMIT $1`,
+    [safeLimit]
+  );
+  if (!res) return [];
+  return res.rows;
 }
 
 module.exports = {
@@ -262,5 +278,6 @@ module.exports = {
   logChat,
   pruneChatLogs,
   getRecentChatLogs,
+  getUserGameStats,
   get lastError() { return lastError; },
 };
