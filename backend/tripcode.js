@@ -5,14 +5,9 @@ try {
   crypt = null;
 }
 
-const DEFAULT_TRIP_LENGTH = 12;
-
-function getTripLength() {
-  const value = Number(process.env.TRIP_LENGTH || DEFAULT_TRIP_LENGTH);
-  if (value === 10 || value === 12) {
-    return value;
-  }
-  return DEFAULT_TRIP_LENGTH;
+function getTripLength(source) {
+  const key = String(source || '');
+  return key.length >= 12 ? 12 : 10;
 }
 
 function sanitizeSalt(s) {
@@ -49,13 +44,12 @@ function createLongTrip(source) {
 
 function createTrip(source) {
   source = String(source || '');
-  const length = getTripLength();
 
-  if (length === 10) {
-    return createLegacyTrip(source);
+  if (getTripLength(source) === 12) {
+    return createLongTrip(source);
   }
 
-  return createLongTrip(source);
+  return createLegacyTrip(source);
 }
 
 module.exports = { createTrip };
