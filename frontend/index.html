@@ -1,0 +1,610 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Tkm&nbsp;Online</title>
+    <link rel="stylesheet" href="./css/html5reset-1.6.1.css" />
+    <link rel="stylesheet" href="./css/index.css" />
+    <script src="./js/reconnecting-websocket.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+
+        <div id="header">
+            <div id="title">TkmOnline mitdok</div>
+            <a href="http://www57.atwiki.jp/tkmonline/" target="_blank">
+                <div id="wiki">WIKI</div>
+            </a>
+            <!-- <span id="message">[定期メンテナンス案内] 毎日AM4:00にサーバー再起動します</span> -->
+            <!-- <a href="http://jbbs.livedoor.jp/netgame/12693/" target="_blank"><div id="bbs">BBS</div></a> -->
+        </div>
+        <div id="wrapper">
+            <!-- <div id="catch-copy"></div>
+                
+                <div id="eye-catch"></div> -->
+
+            <table id="room-table">
+                <tr>
+                    <td>
+                        <div class="group-name">野良卓</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="room0" class="room">
+                        <a href="cataso/I.html" target="_blank">
+                            <div class="room-title">カタソI</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                    <td id="room1" class="room">
+                        <a href="cataso/II.html" target="_blank">
+                            <div class="room-title">カタソII</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                    <td id="room2" class="room">
+                        <a href="cataso/III.html" target="_blank">
+                            <div class="room-title">カタソIII</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                    <td id="room3" class="room">
+                        <a href="battleraiso/I.html" target="_blank">
+                            <div class="room-title">バトルライソI</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                    <td id="room4" class="room">
+                        <a href="goipai/I.html" target="_blank">
+                            <div class="room-title">ごい牌I</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="group-name">身内卓</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="room5" class="room">
+                        <a href="cataso/IV.html" target="_blank">
+                            <div class="room-title">カタソIV</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                    <td id="room6" class="room">
+                        <a href="cataso/V.html" target="_blank">
+                            <div class="room-title">カタソV</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                    <td id="room7" class="room">
+                        <a href="cataso/VI.html" target="_blank">
+                            <div class="room-title">カタソVI</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                    <td id="room8" class="room">
+                        <a href="cataso/VII.html" target="_blank">
+                            <div class="room-title">カタソVII</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                    <td id="room9" class="room">
+                        <a href="cataso/VIII.html" target="_blank">
+                            <div class="room-title">カタソVIII</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="room10" class="room">
+                        <a href="cataso/IX.html" target="_blank">
+                            <div class="room-title">カタソIX</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                    <td id="room11" class="room">
+                        <a href="cataso/X.html" target="_blank">
+                            <div class="room-title">カタソX</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                    <td id="room12" class="room">
+                        <a href="cataso/XI.html" target="_blank">
+                            <div class="room-title">カタソXI</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                    <td id="room13" class="room">
+                        <a href="cataso/XII.html" target="_blank">
+                            <div class="room-title">カタソXII</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                    <td id="room14" class="room">
+                        <a href="cataso/XIII.html" target="_blank">
+                            <div class="room-title">カタソXIII</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="room15" class="room">
+                        <a href="cataso/XIV.html" target="_blank">
+                            <div class="room-title">カタソXIV</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                    <td id="room16" class="room">
+                        <a href="cataso/XV.html" target="_blank">
+                            <div class="room-title">カタソXV</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                    <td id="room17" class="room">
+                        <a href="cataso/XVI.html" target="_blank">
+                            <div class="room-title">カタソXVI</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                    <td id="room18" class="room">
+                        <a href="cataso/XVII.html" target="_blank">
+                            <div class="room-title">カタソXVII</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                    <td id="room19" class="room">
+                        <a href="cataso/XVIII.html" target="_blank">
+                            <div class="room-title">カタソXVIII</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                <tr>
+                    <td id="room20" class="room">
+                        <a href="battleraiso/II.html" target="_blank">
+                            <div class="room-title">バトルライソII</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                    <td id="room21" class="room">
+                        <a href="battleraiso/III.html" target="_blank">
+                            <div class="room-title">バトルライソIII</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                    <td id="room22" class="room">
+                        <a href="battleraiso/IV.html" target="_blank">
+                            <div class="room-title">バトルライソIV</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                    <td id="room23" class="room">
+                        <a href="goipai/II.html" target="_blank">
+                            <div class="room-title">ごい牌II</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                    <td id="room24" class="room">
+                        <a href="goipai/III.html" target="_blank">
+                            <div class="room-title">ごい牌III</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="room26" class="room">
+                        <a href="kcataso/I.html" target="_blank">
+                            <div class="room-title">騎士カタソI</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                    <td id="room27" class="room">
+                        <a href="kcataso/II.html" target="_blank">
+                            <div class="room-title">騎士カタソII</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                    <td id="room28" class="room">
+                        <a href="kcataso/III.html" target="_blank">
+                            <div class="room-title">騎士カタソIII</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                    <td id="room29" class="room">
+                        <a href="kcataso/IV.html" target="_blank">
+                            <div class="room-title">騎士カタソIV</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                        </a>
+                    </td>
+                    <td id="room25" class="hidden">
+                            <div class="room-title"></div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                    </td>
+                    <td id="room30" class="hidden">
+                            <div class="room-title"></div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                    </td>
+                    <td id="room31" class="room">
+                        <a href="blocas/I.html" target="_blank">
+                            <div class="room-title">ブロッカスI</div>
+                            <div class="room-number"></div>
+                            <div class="blocas-ready"></div>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="room32" class="room">
+                        <a href="blocas/II.html" target="_blank">
+                            <div class="room-title">ブロッカスII</div>
+                            <div class="room-number"></div>
+                            <div class="blocas-ready"></div>
+                        </a>
+                    </td>
+                    <td id="room33" class="room">
+                        <a href="blocas/III.html" target="_blank">
+                            <div class="room-title">ブロッカスIII</div>
+                            <div class="room-number"></div>
+                            <div class="blocas-ready"></div>
+                        </a>
+                    </td>
+                    <td id="room34" class="room">
+                        <a href="blocas/IV.html" target="_blank">
+                            <div class="room-title">ブロッカスIV</div>
+                            <div class="room-number"></div>
+                            <div class="blocas-ready"></div>
+                        </a>
+                    </td>
+                    <td id="room35" class="hidden">
+                            <div class="room-title"></div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="group-name">認証卓</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="room36" class="room relative">
+                        <a href="cataso/PI.html" target="_blank">
+                            <div class="room-title">カタソPI</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                            <div class="unlocked"></div>
+                        </a>
+                    </td>
+                    <td id="room37" class="room relative">
+                        <a href="cataso/PII.html" target="_blank">
+                            <div class="room-title">カタソPII</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                            <div class="unlocked"></div>
+                        </a>
+                    </td>
+                    <td id="room38" class="room relative">
+                        <a href="cataso/PIII.html" target="_blank">
+                            <div class="room-title">カタソPIII</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                            <div class="unlocked"></div>
+                        </a>
+                    </td>
+                    <td id="room39" class="room relative">
+                        <a href="cataso/PIV.html" target="_blank">
+                            <div class="room-title">カタソPIV</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                            <div class="unlocked"></div>
+                        </a>
+                    </td>
+                    <td id="room40" class="room relative">
+                        <a href="cataso/PV.html" target="_blank">
+                            <div class="room-title">カタソPV</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                            <div class="unlocked"></div>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="room41" class="room relative">
+                        <a href="battleraiso/PI.html" target="_blank">
+                            <div class="room-title">バトルライソPI</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                            <div class="unlocked"></div>
+                        </a>
+                    </td>
+                    <td id="room42" class="room relative">
+                        <a href="battleraiso/PII.html" target="_blank">
+                            <div class="room-title">バトルライソPII</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                            <div class="unlocked"></div>
+                        </a>
+                    </td>
+                    <td id="room43" class="room relative">
+                        <a href="battleraiso/PIII.html" target="_blank">
+                            <div class="room-title">バトルライソPIII</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                            <div class="unlocked"></div>
+                        </a>
+                    </td>
+                    <td id="room44" class="room relative">
+                        <a href="battleraiso/PIV.html" target="_blank">
+                            <div class="room-title">バトルライソPIV</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                            <div class="unlocked"></div>
+                        </a>
+                    </td>
+                    <td id="room45" class="room relative">
+                        <a href="battleraiso/PV.html" target="_blank">
+                            <div class="room-title">バトルライソPV</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                            <div class="unlocked"></div>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="room46" class="room relative">
+                        <a href="goipai/PI.html" target="_blank">
+                            <div class="room-title">ごい牌PI</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                            <div class="unlocked"></div>
+                        </a>
+                    </td>
+                    <td id="room47" class="room relative">
+                        <a href="goipai/PII.html" target="_blank">
+                            <div class="room-title">ごい牌PII</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                            <div class="unlocked"></div>
+                        </a>
+                    </td>
+                    <td id="room48" class="room relative">
+                        <a href="goipai/PIII.html" target="_blank">
+                            <div class="room-title">ごい牌PIII</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                            <div class="unlocked"></div>
+                        </a>
+                    </td>
+                    <td id="room49" class="room relative">
+                        <a href="goipai/PIV.html" target="_blank">
+                            <div class="room-title">ごい牌PIV</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                            <div class="unlocked"></div>
+                        </a>
+                    </td>
+                    <td id="room50" class="room relative">
+                        <a href="goipai/PV.html" target="_blank">
+                            <div class="room-title">ごい牌PV</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                            <div class="unlocked"></div>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="room51" class="room relative">
+                        <a href="kcataso/PI.html" target="_blank">
+                            <div class="room-title">騎士カタソPI</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                            <div class="unlocked"></div>
+                        </a>
+                    </td>
+                    <td id="room52" class="room relative">
+                        <a href="kcataso/PII.html" target="_blank">
+                            <div class="room-title">騎士カタソPII</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                            <div class="unlocked"></div>
+                        </a>
+                    </td>
+                    <td id="room53" class="room relative">
+                        <a href="kcataso/PIII.html" target="_blank">
+                            <div class="room-title">騎士カタソPIII</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                            <div class="unlocked"></div>
+                        </a>
+                    </td>
+                    <td id="room54" class="room relative">
+                        <a href="kcataso/PIV.html" target="_blank">
+                            <div class="room-title">騎士カタソPIV</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                            <div class="unlocked"></div>
+                        </a>
+                    </td>
+                    <td id="room55" class="room relative">
+                        <a href="kcataso/PV.html" target="_blank">
+                            <div class="room-title">騎士カタソPV</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                            <div class="unlocked"></div>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="room56" class="room relative">
+                        <a href="blocas/PI.html" target="_blank">
+                            <div class="room-title">ブロッカスPI</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                            <div class="unlocked"></div>
+                        </a>
+                    </td>
+                    <td id="room57" class="room relative">
+                        <a href="blocas/PII.html" target="_blank">
+                            <div class="room-title">ブロッカスPII</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                            <div class="unlocked"></div>
+                        </a>
+                    </td>
+                    <td id="room58" class="room relative">
+                        <a href="blocas/PIII.html" target="_blank">
+                            <div class="room-title">ブロッカスPIII</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                            <div class="unlocked"></div>
+                        </a>
+                    </td>
+                    <td id="room59" class="room relative">
+                        <a href="blocas/PIV.html" target="_blank">
+                            <div class="room-title">ブロッカスPIV</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                            <div class="unlocked"></div>
+                        </a>
+                    </td>
+                    <td id="room60" class="room relative">
+                        <a href="blocas/PV.html" target="_blank">
+                            <div class="room-title">ブロッカスPV</div>
+                            <div class="room-number"></div>
+                            <div class="cataso-ready"></div>
+                            <div class="unlocked"></div>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="footer">
+            <div id="twitter">
+                <a href="https://twitter.com/share" class="twitter-share-button"
+                    data-url="https://mitdok.github.io/tkmonline" data-text="TkmOnline" data-lang="ja">ツイート</a>
+                <script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs');</script>
+            </div>
+        </div>
+    </div>
+    <script src="js/const.js"></script>
+    <script>
+        var ws = new ReconnectingWebSocket(WSURL);
+        var interval;
+
+        ws.onopen = function () {
+            ws.send(String.fromCharCode(100));
+
+            interval = setInterval(
+                function () {
+                    ws.send(String.fromCharCode(100));
+                }, 5000
+            );
+        }
+
+        ws.onclose = function () {
+            clearInterval(interval);
+            interval = 0;
+            console.debug('CLOSE WEBSOCKET');
+        }
+
+        ws.onmessage = function (e) {
+            var args = e.data.substring(1).split(' ');
+
+            var i;
+            for (i = 0; i <= 60; i++) {
+                var roomDiv = document.getElementById('room' + i).getElementsByTagName('div');
+                roomDiv[1].textContent = args[i * 4];
+
+                if (roomDiv[1].textContent === '0') {
+                    roomDiv[1].style.backgroundColor = 'gray';
+                } else {
+                    roomDiv[1].style.backgroundColor = 'deeppink';
+                }
+
+                switch (args[i * 4 + 1]) {
+                    case 'a':
+                        if (args[i * 4 + 2] === 'p') {
+                            roomDiv[2].className = 'acquiso-playing';
+                        } else {
+                            roomDiv[2].className = 'acquiso-ready';
+                        }
+                        break;
+                    case 'b':
+                        if (args[i * 4 + 2] === 'p') {
+                            roomDiv[2].className = 'battleraiso-playing';
+                        } else {
+                            roomDiv[2].className = 'battleraiso-ready';
+                        }
+                        break;
+                    case 'c':
+                        if (args[i * 4 + 2] === 'p') {
+                            roomDiv[2].className = 'cataso-playing';
+                        } else {
+                            roomDiv[2].className = 'cataso-ready';
+                        }
+                        break;
+                    case 'g':
+                        if (args[i * 4 + 2] === 'p') {
+                            roomDiv[2].className = 'goipai-playing';
+                        } else {
+                            roomDiv[2].className = 'goipai-ready';
+                        }
+                        break;
+                    case 'l':
+                        if (args[i * 4 + 2] === 'p') {
+                            roomDiv[2].className = 'blocas-playing';
+                        } else {
+                            roomDiv[2].className = 'blocas-ready';
+                        }
+                        break;
+                }
+
+                if(roomDiv[3]) {
+                    if(args[i * 4 + 3] === 'l') {
+                        roomDiv[3].className = 'locked'; 
+                    } else {
+                        roomDiv[3].className = 'unlocked'; 
+                    }
+                }
+            }
+        }
+    </script>
+    
+</body>
+
+</html>

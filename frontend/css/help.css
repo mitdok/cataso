@@ -1,0 +1,147 @@
+.flex {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    flex-wrap: wrap;
+}
+.center {
+    align-items: center;
+}
+.mb50 {
+    margin-bottom: 50px;
+}
+
+.child {
+    margin-right: 10px;
+}
+
+table {
+    border-collapse: collapse;
+    border: solid 2px #aaa;/*表全体を線で囲う*/
+}
+
+
+table th, table td {
+    border: dashed 1px #aaa;/**/
+}
+
+table.table-trade {
+    border-collapse: collapse;
+    border: solid 2px #875203;/*表全体を線で囲う*/
+}
+
+
+table.table-trade th, table.table-trade td {
+    border: dashed 1px #875203;/**/
+}
+
+table.table-politics {
+    border-collapse: collapse;
+    border: solid 2px #20A1A1;/*表全体を線で囲う*/
+}
+
+table.table-politics th, table.table-politics td {
+    border: dashed 1px #20A1A1;/**/
+}
+
+table.table-science {
+    border-collapse: collapse;
+    border: solid 2px #76A843;/*表全体を線で囲う*/
+}
+table.table-science th, table.table-science td {
+    border: dashed 1px #76A843;/**/
+}
+
+td:nth-child(2), th:nth-child(2) {
+   text-align: left;
+}
+
+.resource {
+    border: black solid 1px;
+    margin-right: 2px;
+}
+
+.brick, .brick::after, .brick::before {
+    background: #880015;
+    color: #fff;
+}
+
+.wool, .wool::before, .wool::after {
+    background: #B5E61D;
+    color: #000;
+}
+.ore, .ore::before, .ore::after {
+    background: #7F7F7F;
+    color: #fff;
+}
+.grain, .grain::before, .grain::after {
+    background: #FFF200;
+    color: #000;
+}
+.lumber, .lumber::before, .lumber::after {
+    background: #22B14C;
+    color: #fff;
+}
+.cloth, .cloth::before, .cloth::after {
+    background: linear-gradient(-45deg, #965B02 50%, #F59503 50%);
+    color: #000;
+}
+.coin, .coin::before, .coin::after {
+    background: linear-gradient(-45deg, #20A1A1 50%, #00FFFF 50%);
+    color: #000;
+}
+.paper, .paper::before, .paper::after {
+    background: linear-gradient(-45deg, #76A843 50%, #00FF00 50%);
+    color: #000;
+}
+
+.hexagon {
+    width: 88px;
+    height: 50px;
+    margin-top: 50px;
+    position: relative;
+  }
+  
+  .hexagon_cont {
+    height: 100%;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .hexagon::before,
+  .hexagon::after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+  }
+  
+  .hexagon::before {
+    transform: rotate(60deg);
+  }
+  
+  .hexagon::after {
+    transform: rotate(-60deg);
+  }
+
+  .button {
+    margin-bottom: 5px;
+    color: white;
+    background: green;
+    text-align: center;
+    border-radius: 5px;
+  }
+
+  .button:hover {
+      cursor: pointer;
+      opacity: 0.6;
+  }

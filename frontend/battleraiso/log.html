@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>PLAY LOG</title>
+    <link rel="stylesheet" href="../css/help.css">
+<script>
+  var playLogs;
+    onDownloadLog = function (game) {
+      var logs = game.playLog;
+      playLogs = logs;
+        if(!logs) {
+          return;
+        }
+
+        var log = document.getElementById("log");
+        log.innerHTML = '';
+        if(game.state === 0) {
+          var table = document.createElement("table");
+          table.innerHTML = '<tr><th>ターン</th><th>プレイヤー名</th><th>プレイ前手札</th><th>プレイ後手札</th><th>プレイ</th><th>列</th><th>ドロー</th><th>フラグ獲得</th><th>選択カード</th><th>移動前</th><th>移動後</th></tr>';
+          for(let i = 0; i < logs.length; i++) {
+              var currentLog = logs[i];
+              // var today = new Date(currentLog.meta.date)
+              // console.log(today.getTime())
+              table.innerHTML += `<tr><td>${currentLog.turn}</td><td>${currentLog.uid}</td><td>${currentLog.beforeHand}</td><td>${currentLog.afterHand}</td><td>${currentLog.playingCard ? currentLog.playingCard : currentLog.pass ? 'パス' : ''}</td><td>${currentLog.index ? currentLog.index : ''}</td><td>${currentLog.draw ? currentLog.draw : ''}</td><td>${currentLog.flag}</td><td>${currentLog.targetCard ? currentLog.targetCard : ''}</td><td>${currentLog.move ? currentLog.move.before : ''}</td><td>${currentLog.move ? currentLog.move.after === 0 ? '除外' : currentLog.move.after : ''}</td></tr>`;
+          }
+          log.appendChild(table);
+        }
+    }
+    onDownloadCsv = function () {
+      if (!playLogs || playLogs.length === 0) return;
+      var today = playLogs[0].meta.date;
+      var player1 = playLogs[0].meta.player1;
+      var player2 = playLogs[0].meta.player2;
+      var filename = `${today}_${player1}_vs_${player2}`
+      var data = `ターン,プレイヤー名,プレイ前手札,プレイ後手札,プレイ,列,ドロー,フラグ獲得,選択カード,移動前,移動後\n`
+      for(let i = 0; i < playLogs.length; i++) {
+        var currentLog = playLogs[i];
+        data += `${currentLog.turn},${currentLog.uid},"${currentLog.beforeHand}","${currentLog.afterHand}",${currentLog.playingCard ? currentLog.playingCard : currentLog.pass ? 'パス' : ''},${currentLog.index ? currentLog.index : ''},${currentLog.draw ? currentLog.draw : ''},${currentLog.flag},${currentLog.targetCard ? currentLog.targetCard : ''},${currentLog.move ? currentLog.move.before : ''},${currentLog.move ? currentLog.move.after === 0 ? '除外' : currentLog.move.after : ''}\n`
+      }
+      // UTF BOM
+      var bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+      // リンククリエイト
+      var downloadLink = document.createElement("a");
+      downloadLink.download = filename + ".csv";
+      // ファイル情報設定
+      downloadLink.href = URL.createObjectURL(new Blob([bom, data], { type: "text/csv" }));
+      downloadLink.dataset.downloadurl = ["text/csv", downloadLink.download, downloadLink.href].join(":");
+      // イベント実行
+      downloadLink.click();
+    }
+</script>
+</head>
+<body>
+  <div class="flex">
+    <div class="child">
+      <h3>PLAY LOG</h3>
+      <input type="button" class="button" value="CSVでダウンロード" onclick="onDownloadCsv();"/>
+      <div id="log"></div>
+    </div>
+  </div>
+</body>
+</html>
+

@@ -1,0 +1,25 @@
+{
+  "name": "tkmninja",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tkmax/tkmninja.git"
+  },
+  "dependencies": {
+    "express": "^4.4.5",
+    "redis": "^4.0.4",
+    "ws": "0.4.x",
+    "pg": "^8.11.5",
+    "unix-crypt-td-js": "^1.1.4"
+  },
+  "engines": {
+    "node": "16.4.2"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "serve": "nodemon app.js"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}

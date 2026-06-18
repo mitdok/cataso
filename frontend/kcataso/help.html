@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>HELP</title>
+    <link rel="stylesheet" href="../css/help.css">
+</head>
+<body>
+    <div class="flex">
+      <div class="class">
+        <h3>土地番号</h3>
+        <img src="view/rand-index.png" alt="" srcset="">
+      </div>
+        <div class="child">
+            <h3>交易品生産</h3>
+            <div class="flex">
+                <div class="child hexagon wool">
+                    <div class="hexagon_cont">
+                        <span class="resource wool">羊</span>
+                        <span class="resource cloth">服</span>
+                    </div>
+                </div>
+                <div class="child hexagon ore">
+                    <div class="hexagon_cont">
+                        <span class="resource ore">鉄</span>
+                        <span class="resource coin">貨</span>
+                    </div>
+                </div>
+                <div class="child hexagon lumber">
+                    <div class="hexagon_cont">
+                        <span class="resource lumber">木</span>
+                        <span class="resource paper">紙</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="child">
+            <h3>建設コスト表</h3>
+            <table border="1" class="table">
+                <tr>
+                    <th>建設物</th>
+                    <th>必要コスト</th>
+                </tr>
+                <tr>
+                  <td>道</td>
+                  <td><span class="resource brick">土</span><span class="resource lumber">木</span></td>
+                </tr>
+                <tr>
+                  <td>家</td>
+                  <td><span class="resource brick">土</span><span class="resource wool">羊</span><span class="resource grain">麦</span><span class="resource lumber">木</span></td>
+                </tr>
+                <tr>
+                  <td>街</td>
+                  <td><span class="resource ore">鉄</span><span class="resource ore">鉄</span><span class="resource ore">鉄</span><span class="resource grain">麦</span><span class="resource grain">麦</span></td>
+                </tr>
+                <tr>
+                  <td>城壁</td>
+                  <td><span class="resource brick">土</span><span class="resource brick">土</span></td>
+                </tr>
+                <tr>
+                  <td>騎士の配置/強化</td>
+                  <td><span class="resource wool">羊</span><span class="resource ore">鉄</span></td>
+                </tr>
+                <tr>
+                  <td>騎士の活性化</td>
+                  <td><span class="resource grain">麦</span></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="flex">
+        <div class="child">
+            <h3>経済カード</h3>
+            <table border="1" class="table-trade">
+                <tr>
+                    <th>カード</th>
+                    <th>説明</th>
+                </tr>
+                <tr>
+                  <td>交易港</td>
+                  <td>資源を１つあげる代わりに交易品を１つもらう</td>
+                </tr>
+                <tr>
+                  <td>交易長</td>
+                  <td>自分より点数の高いプレイヤー1人から資源/交易品を2枚奪う</td>
+                </tr>
+                <tr>
+                  <td>商人</td>
+                  <td>自分の建物が設置されている土地に商人を置く</td>
+                </tr>
+                <tr>
+                  <td>交易船団</td>
+                  <td>利用したターンの間、選択した資源/交易品の2:1貿易が可能</td>
+                </tr>
+                <tr>
+                  <td>資源独占</td>
+                  <td>特定の資源をほかのプレイヤーから最大で2枚奪う</td>
+                </tr>
+                <tr>
+                  <td>交易独占</td>
+                  <td>特定の交易品をほかのプレイヤーから最大で1枚奪う</td>
+                </tr>
+            </table>
+        </div>
+        <div class="child">
+            <h3>政治カード</h3>
+            <table border="1" class="table-politics">
+                <tr>
+                    <th>カード</th>
+                    <th>説明</th>
+                </tr>
+                <tr>
+                  <td>司教</td>
+                  <td>盗賊を移動させる。隣接した全プレイヤーからランダムで資源を略奪</td>
+                </tr>
+                <tr>
+                  <td>投降兵</td>
+                  <td>他プレイヤーを選び、騎士を1人奪う</td>
+                </tr>
+                <tr>
+                  <td>外交官</td>
+                  <td>開かれた道を取り除く</td>
+                </tr>
+                <tr>
+                  <td>陰謀</td>
+                  <td>自分の街道に接している他のプレイヤーの騎士を1人追い払う</td>
+                </tr>
+                <tr>
+                  <td>妨害工作</td>
+                  <td>自分の点数以上のプレイヤーは手持ちの資源を半分捨てる</td>
+                </tr>
+                <tr>
+                  <td>スパイ</td>
+                  <td>他プレイヤー1人のカードを1枚奪う</td>
+                </tr>
+                <tr>
+                  <td>司令官</td>
+                  <td>自分の全ての騎士を無料で活性状態にする事ができる</td>
+                </tr>
+                <tr>
+                  <td>婚礼</td>
+                  <td>自分より点数の多いプレイヤーから2枚(資源、交易品)プレゼントしてもらえる</td>
+                </tr>
+
+            </table>
+        </div>
+        <div class="child">
+            <h3>科学カード</h3>
+            <table border="1" class="table-science">
+                <tr>
+                    <th>カード</th>
+                    <th>説明</th>
+                </tr>
+                <tr>
+                  <td>錬金術師</td>
+                  <td>数値サイコロ2個の出目を固定</td>
+                </tr>
+                <tr>
+                  <td>クレーン</td>
+                  <td>通常より1つ少ない数の交易品で都市開発</td>
+                </tr>
+                <tr>
+                  <td>技術者</td>
+                  <td>城壁を無料で建設できる</td>
+                </tr>
+                <tr>
+                  <td>発明家</td>
+                  <td>土地の数値をほかの場所と交換</td>
+                </tr>
+                <tr>
+                  <td>灌漑</td>
+                  <td>自分の建物と接している麦タイルの数ｘ２つの麦を獲得</td>
+                </tr>
+                <tr>
+                  <td>医学</td>
+                  <td>鉄２、麦１で街を建設できる</td>
+                </tr>
+                <tr>
+                  <td>鉱山</td>
+                  <td>自分の建物と接している鉄タイルの数ｘ２つの鉄を獲得</td>
+                </tr>
+                <tr>
+                  <td>街道</td>
+                  <td>道2本を無料で建設できる</td>
+                </tr>
+                <tr>
+                  <td>鍛冶</td>
+                  <td>騎士二人まで無料で1段階昇格</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+
