@@ -1,6 +1,25 @@
 ﻿var WebSocketServer = require("ws").Server;
 var http = require("http");
-var server = http.createServer(function (req, res) {
+var url = require("url");
+var db = require("./db");
+var server = http.createServer(async function (req, res) {
+  var parsed = url.parse(req.url, true);
+
+  if (parsed.pathname === "/logs") {
+    try {
+      var logs = await db.getRecentChatLogs(parsed.query.room, parsed.query.limit || 200);
+      res.writeHead(200, {
+        "Content-Type": "application/json; charset=utf-8",
+        "Access-Control-Allow-Origin": "*",
+      });
+      res.end(JSON.stringify({ ok: true, logs: logs }));
+    } catch (err) {
+      res.writeHead(500, { "Content-Type": "application/json; charset=utf-8" });
+      res.end(JSON.stringify({ ok: false, error: "failed_to_load_logs" }));
+    }
+    return;
+  }
+
   res.writeHead(200, { "Content-Type": "text/plain" });
   res.end("tkmninja websocket server is running\n");
 });
@@ -10,7 +29,6 @@ var Kcataso = require("./kcataso/Kcataso");
 var BattleRaiso = require("./battleraiso/BattleRaiso");
 var Goipai = require("./goipai/Goipai");
 var Blocas = require("./blocas/Blocas");
-var db = require("./db");
 var tripcode = require("./tripcode");
 
 const redis = require("redis");
