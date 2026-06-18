@@ -1,0 +1,14 @@
+name = "cataso-edge"
+main = "src/index.js"
+compatibility_date = "2026-06-19"
+workers_dev = true
+
+[vars]
+# Render-compatible backend used while the native Durable Objects backend is being ported.
+# Do not include trailing slash.
+UPSTREAM_HTTP = "https://tkmninja-mit.onrender.com"
+UPSTREAM_WS = "wss://tkmninja-mit.onrender.com"
+
+# Optional CORS origin for API calls from Pages/custom domains.
+# "*" is fine for public logs/stats while this is a public fan service.
+CORS_ORIGIN = "*"
