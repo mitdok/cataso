@@ -59,9 +59,7 @@
       margin: 0 0 10px 0;
       font-size: 18px;
     }
-    #status {
-      color: #f7c948;
-    }
+    #status { color: #f7c948; }
     .log-list {
       display: flex;
       flex-direction: column;
@@ -78,16 +76,9 @@
       line-height: 1.4;
       word-break: break-word;
     }
-    .log-time {
-      color: #aaa;
-      font-size: 12px;
-    }
-    .log-uid {
-      font-weight: bold;
-    }
-    .log-msg {
-      white-space: pre-wrap;
-    }
+    .log-time { color: #aaa; font-size: 12px; }
+    .log-uid { font-weight: bold; }
+    .log-msg { white-space: pre-wrap; }
     table {
       width: 100%;
       border-collapse: collapse;
@@ -99,9 +90,7 @@
       text-align: right;
     }
     th:first-child, td:first-child,
-    th:nth-child(2), td:nth-child(2) {
-      text-align: left;
-    }
+    th:nth-child(2), td:nth-child(2) { text-align: left; }
     th {
       position: sticky;
       top: 70px;
@@ -111,20 +100,11 @@
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       color: #8ee58e;
     }
-    .empty, .error {
-      padding: 16px;
-      color: #aaa;
-    }
-    .error {
-      color: #ff8080;
-    }
+    .empty, .error { padding: 16px; color: #aaa; }
+    .error { color: #ff8080; }
     @media (max-width: 920px) {
-      main {
-        grid-template-columns: 1fr;
-      }
-      .log-item {
-        grid-template-columns: 1fr;
-      }
+      main { grid-template-columns: 1fr; }
+      .log-item { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -161,8 +141,10 @@
 
   <script>
     function apiBase() {
-      var base = String(WSURL || '').replace(/^wss:/, 'https:').replace(/^ws:/, 'http:');
-      return base.replace(/\/$/, '');
+      return String(window.CATASO_API_BASE || WSURL || '')
+        .replace(/^wss:/, 'https:')
+        .replace(/^ws:/, 'http:')
+        .replace(/\/$/, '');
     }
 
     function escapeHtml(source) {
