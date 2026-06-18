@@ -94,6 +94,15 @@ Tkm.splitSyntaxType3 = function (source) {
     return source.substring(1).split(' ');
 }
 
+Tkm.escapeHtml = function (source) {
+    return String(source || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 Tkm.updateUserList = function () {
     var html = '';
 
@@ -101,26 +110,30 @@ Tkm.updateUserList = function () {
     var len1 = this.userList.length;
     for (i = 0; i < len1; i++) {
         var token = this.userList[i].split('%');
+        var uid = token[0];
+        var trip = token.length > 1 ? token[1] : '';
 
         html += '<div class="user">';
 
-        if (token[0] === this.view.cid) {
+        if (uid === this.view.cid) {
             html += '<span class="owner-icon"></span>';
         } else {
             html += '<span class="common-icon"></span>';
         }
 
-        if (token[0] === this.view.uid) {
+        if (uid === this.view.uid) {
             html += '<span class="my-icon"></span>';
         } else {
             html += '<span class="user-icon"></span>';
         }
 
-        html += '<span class="uid">' + token[0] + '</span>';
+        html += '<span class="uid">' + Tkm.escapeHtml(uid) + '</span>';
 
-        // if (token.length > 1) {
-        //     html += '◆<span class="trip">' + token[1] + '</span>';
-        // }
+        // Newer backends already include "◆trip" in uid for uniqueness.
+        // Keep this fallback so older/protocol-compatible backends can still show full 10/12-char trips.
+        if (trip !== '' && uid.indexOf('◆') === -1) {
+            html += '<span class="trip">◆' + Tkm.escapeHtml(trip) + '</span>';
+        }
 
         html += '</div>'
     }
