@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <title>Cataso Logs / Stats</title>
+  <script src="./js/const.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background: #111;
+      color: #eee;
+      font-family: "メイリオ", "Meiryo", sans-serif;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      padding: 12px 18px;
+      background: #000;
+      box-shadow: 0 4px 18px rgba(0,0,0,.45);
+    }
+    h1 {
+      margin: 0 0 8px 0;
+      font-size: 22px;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      font-size: 14px;
+    }
+    input, select, button {
+      padding: 6px 8px;
+      border: 1px solid #555;
+      border-radius: 6px;
+      background: #222;
+      color: #fff;
+    }
+    button {
+      cursor: pointer;
+      background: #335c32;
+      font-weight: bold;
+    }
+    main {
+      display: grid;
+      grid-template-columns: minmax(320px, 1fr) minmax(320px, 520px);
+      gap: 16px;
+      padding: 16px;
+    }
+    section {
+      min-width: 0;
+      padding: 12px;
+      background: #191919;
+      border: 1px solid #333;
+      border-radius: 10px;
+    }
+    h2 {
+      margin: 0 0 10px 0;
+      font-size: 18px;
+    }
+    #status {
+      color: #f7c948;
+    }
+    .log-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .log-item {
+      display: grid;
+      grid-template-columns: 150px minmax(130px, 240px) 1fr;
+      gap: 8px;
+      padding: 7px 8px;
+      border-left: 4px solid #555;
+      background: #222;
+      border-radius: 6px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+    .log-time {
+      color: #aaa;
+      font-size: 12px;
+    }
+    .log-uid {
+      font-weight: bold;
+    }
+    .log-msg {
+      white-space: pre-wrap;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    th, td {
+      padding: 7px 6px;
+      border-bottom: 1px solid #333;
+      text-align: right;
+    }
+    th:first-child, td:first-child,
+    th:nth-child(2), td:nth-child(2) {
+      text-align: left;
+    }
+    th {
+      position: sticky;
+      top: 70px;
+      background: #191919;
+    }
+    .trip {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color: #8ee58e;
+    }
+    .empty, .error {
+      padding: 16px;
+      color: #aaa;
+    }
+    .error {
+      color: #ff8080;
+    }
+    @media (max-width: 920px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+      .log-item {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Cataso 過去ログ / 勝率</h1>
+    <div class="controls">
+      <label>Room <input id="room" type="number" min="0" max="60" value="0" /></label>
+      <label>Log limit
+        <select id="limit">
+          <option value="100">100</option>
+          <option value="200" selected>200</option>
+          <option value="500">500</option>
+          <option value="1000">1000</option>
+        </select>
+      </label>
+      <button id="reload">再読込</button>
+      <a href="./index.html" style="color:#9fd3ff;">部屋一覧へ</a>
+      <span id="status"></span>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <h2>過去ログ（新しい順）</h2>
+      <div id="logs" class="log-list"></div>
+    </section>
+
+    <section>
+      <h2>トリップ別 勝敗・勝率</h2>
+      <div id="stats"></div>
+    </section>
+  </main>
+
+  <script>
+    function apiBase() {
+      var base = String(WSURL || '').replace(/^wss:/, 'https:').replace(/^ws:/, 'http:');
+      return base.replace(/\/$/, '');
+    }
+
+    function escapeHtml(source) {
+      return String(source == null ? '' : source)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function formatTime(value) {
+      if (!value) return '';
+      try {
+        return new Date(value).toLocaleString('ja-JP', {
+          month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'
+        });
+      } catch (e) {
+        return value;
+      }
+    }
+
+    function roomName(id) {
+      return Number.isFinite(Number(id)) ? 'room ' + id : '';
+    }
+
+    async function loadLogs() {
+      var room = document.getElementById('room').value;
+      var limit = document.getElementById('limit').value;
+      var target = document.getElementById('logs');
+      target.innerHTML = '<div class="empty">読込中...</div>';
+      var res = await fetch(apiBase() + '/logs?room=' + encodeURIComponent(room) + '&limit=' + encodeURIComponent(limit));
+      var json = await res.json();
+      if (!json.ok) throw new Error('logs api failed');
+
+      var logs = json.logs || [];
+      if (logs.length === 0) {
+        target.innerHTML = '<div class="empty">ログはまだありません。</div>';
+        return;
+      }
+
+      target.innerHTML = logs.map(function (log, index) {
+        var fade = Math.max(0.25, 1 - (index / Math.max(logs.length - 1, 1)) * 0.7);
+        var border = escapeHtml(log.color || '#666');
+        return '<div class="log-item" style="opacity:' + fade + '; border-left-color:' + border + '">' +
+          '<div class="log-time">' + escapeHtml(formatTime(log.created_at)) + '<br>' + escapeHtml(roomName(log.room_id)) + '</div>' +
+          '<div class="log-uid">' + escapeHtml(log.uid) + (log.trip ? '<br><span class="trip">◆' + escapeHtml(log.trip) + '</span>' : '') + '</div>' +
+          '<div class="log-msg">' + escapeHtml(log.message) + '</div>' +
+          '</div>';
+      }).join('');
+    }
+
+    async function loadStats() {
+      var target = document.getElementById('stats');
+      target.innerHTML = '<div class="empty">読込中...</div>';
+      var res = await fetch(apiBase() + '/stats?limit=200');
+      var json = await res.json();
+      if (!json.ok) throw new Error('stats api failed');
+
+      var stats = json.stats || [];
+      if (stats.length === 0) {
+        target.innerHTML = '<div class="empty">勝敗記録はまだありません。トリップ付きでゲームを完了すると記録されます。</div>';
+        return;
+      }
+
+      target.innerHTML = '<table><thead><tr>' +
+        '<th>Trip</th><th>最新名</th><th>試合</th><th>勝</th><th>敗</th><th>勝率</th>' +
+        '</tr></thead><tbody>' +
+        stats.map(function (row) {
+          return '<tr>' +
+            '<td class="trip">◆' + escapeHtml(row.trip) + '</td>' +
+            '<td>' + escapeHtml(row.latest_uid) + '</td>' +
+            '<td>' + escapeHtml(row.games) + '</td>' +
+            '<td>' + escapeHtml(row.wins) + '</td>' +
+            '<td>' + escapeHtml(row.losses) + '</td>' +
+            '<td>' + escapeHtml(row.win_rate_percent) + '%</td>' +
+            '</tr>';
+        }).join('') + '</tbody></table>';
+    }
+
+    async function reloadAll() {
+      var status = document.getElementById('status');
+      status.textContent = '更新中...';
+      try {
+        await Promise.all([loadLogs(), loadStats()]);
+        status.textContent = '更新しました';
+      } catch (e) {
+        status.textContent = '取得に失敗しました';
+        if (!document.getElementById('logs').children.length) {
+          document.getElementById('logs').innerHTML = '<div class="error">ログ取得に失敗しました。</div>';
+        }
+        if (!document.getElementById('stats').children.length) {
+          document.getElementById('stats').innerHTML = '<div class="error">勝率取得に失敗しました。</div>';
+        }
+      }
+    }
+
+    document.getElementById('reload').onclick = reloadAll;
+    reloadAll();
+  </script>
+</body>
+</html>
